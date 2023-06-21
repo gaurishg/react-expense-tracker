@@ -1,5 +1,6 @@
 import './App.css';
 import Expenses from './components/Expenses/Expenses';
+import NewExpense from './components/NewExpense/NewExpenses';
 
 export interface Expense {
   id: string;
@@ -32,7 +33,7 @@ function App() {
   ];
   return (
     <div>
-      <h1>Let's get started</h1>
+      <NewExpense />
       <Expenses expenses={expenses}/>
     </div>
   );
