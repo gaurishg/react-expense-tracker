@@ -1,5 +1,5 @@
-import { Expense } from "../App";
-import Card from "./Card";
+import { Expense } from "../../App";
+import Card from "../UI/Card";
 import ExpenseItem from "./ExpenseItem";
 import './Expenses.css';
 
