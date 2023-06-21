@@ -1,7 +1,5 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ExpenseItem from './components/ExpenseItem';
+import Expenses from './components/Expenses';
 
 export interface Expense {
   id: string;
@@ -33,11 +31,10 @@ function App() {
     },
   ];
   return (
-    <>
-      <h2>Let's get started</h2>
-      <p>This is also visible</p>
-      {expenses.map(exp => <ExpenseItem {...exp}/>)}
-    </>
+    <div>
+      <h1>Let's get started</h1>
+      <Expenses expenses={expenses}/>
+    </div>
   );
 }
 
