@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Expense } from '../../App';
 import Card from '../UI/Card';
 import ExpenseDate from './ExpenseDate';
 import './ExpenseItem.css';
+import { Expense } from '../../AppContext';
 
 export default function ExpenseItem({title, amount, date}: Expense) {
     const [appTitle, setAppTitle] = useState(title);

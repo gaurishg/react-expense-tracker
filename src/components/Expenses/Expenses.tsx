@@ -1,10 +1,19 @@
-import { Expense } from "../../App";
+import { useContext, useEffect, useState } from "react";
 import Card from "../UI/Card";
 import ExpenseItem from "./ExpenseItem";
 import './Expenses.css';
+import { useAppContext } from "../../AppContext";
+import ExpensesFilter from "./ExpensesFilter";
 
-export default function Expenses({expenses}: {expenses: Expense[]}) {
+export default function Expenses() {
+    const ctx = useContext(useAppContext());
+    const [expenses, setExpenses] = useState(ctx.getExpenses());
+    useEffect(() => {
+      setExpenses(ctx.getExpenses());
+    }, [ctx.isFilterOn, ctx.filterYear]);
+    
     return (<Card className="expenses">
-      {expenses.map((exp, index) => <ExpenseItem key={index} {...exp}/>)}
+      <ExpensesFilter />
+      {expenses.map(exp => <ExpenseItem key={exp.id} {...exp}/>)}
     </Card>);
 }
