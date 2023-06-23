@@ -7,7 +7,6 @@ const ExpensesFilter = () => {
     const dropdownChangeHandler: ChangeEventHandler<HTMLSelectElement> = (event) => {
         console.log(event.target.value);
         ctx.updateFilter(event.target.value);
-        ctx.updateCtx(ctx);
     };
 
     return (

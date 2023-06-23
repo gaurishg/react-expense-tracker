@@ -7,37 +7,17 @@ export interface Expense {
     date: Date;
   };
 
-class AppContextInterface {
-    constructor(private expenses: Expense[] = [], public filterYear: number = 2023, public isFilterOn: boolean = false) {}
-
-    addExpense(exp: Expense) {
-        this.expenses = [...this.expenses, exp];
-    }
-
-    getExpenses() {
-        if (!this.isFilterOn)
-            return this.expenses.slice();
-        return this.expenses.filter(exp => exp.date.getFullYear() === this.filterYear);
-    }
-
-    updateFilter(filterYear: string) {
-        if (filterYear === '0')
-        {
-            this.isFilterOn = false;
-            return;
-        }
-        console.log('Setting filter');
-        this.filterYear = +filterYear;
-        this.isFilterOn = true;
-    }
-
-    updateCtx: React.Dispatch<React.SetStateAction<AppContextInterface>> = () => {
-
-    }
+interface AppContextInterface {
+    expenses: Expense[];
+    filterYear: number;
+    isFilterOn: boolean;
+    addExpense: (exp: Expense) => void;
+    getExpenses: () => Expense[];
+    updateFilter: (year: string) => void;
 }
 
-const defaultValue: AppContextInterface = new AppContextInterface(
-    [
+const defaultValue: AppContextInterface = {
+    expenses: [
         {
           id: 'e1',
           title: 'Toilet Paper',
@@ -57,18 +37,40 @@ const defaultValue: AppContextInterface = new AppContextInterface(
           amount: 450,
           date: new Date(2021, 5, 12),
         },
-      ]
-);
+      ],
+
+      filterYear: 0,
+      isFilterOn: false,
+      addExpense(exp) {},
+      getExpenses() {return [];},
+      updateFilter(year) {},
+};
 
 const appCtx = createContext(defaultValue);
 
 export function AppContextProvider({children}: {children: ReactNode}) {
-    const [value, setValue] = useState(defaultValue);
-    useEffect(() => {
-        value.updateCtx = setValue;
-    }, []);
+    const [expenses, setExpenses] = useState(defaultValue.expenses);
+    const [isFilterOn, setIsFilterOn] = useState(false);
+    const [filterYear, setFilterYear] = useState(0);
+
+    function addExpense(exp: Expense) {
+        setExpenses(prev => [...prev, exp]);
+    }
+
+    function getExpenses() {
+        return expenses.filter(exp => (!isFilterOn || (isFilterOn && exp.date.getFullYear() === filterYear)));
+    }
+
+    function updateFilter(year: string) {
+        if (year === '0') {
+            setIsFilterOn(false);
+        } else {
+            setIsFilterOn(true);
+        }
+        setFilterYear(+year);
+    }
     return (
-        <appCtx.Provider value={value}>
+        <appCtx.Provider value={{expenses, isFilterOn, filterYear, addExpense, getExpenses, updateFilter}}>
             {children}
         </appCtx.Provider>
     );
